@@ -27,12 +27,10 @@ internal class WpfBootstrapper(IServiceProvider provider, IHostApplicationLifeti
         void RunApplication()
         {
             Application app = _provider.GetRequiredService<Application>();
-            Window window = _provider.GetRequiredService<Window>();
 
-            app.Startup += (_, _) => window.Show();
             app.Exit += (_, _) => _lifetime.StopApplication();
 
-            app.Run(window);
+            app.Run();
         }
     }
 

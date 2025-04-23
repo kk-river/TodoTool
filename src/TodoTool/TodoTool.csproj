@@ -11,6 +11,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.4" />
+    <PackageReference Include="R3Extensions.WPF" Version="1.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TodoTool.Core\TodoTool.Core.csproj" />
+    <ProjectReference Include="..\TodoTool.Modularity\TodoTool.Modularity.csproj" />
+    <ProjectReference Include="..\TodoTool.Repositories.SQLite\TodoTool.Repositories.SQLite.csproj" />
   </ItemGroup>
 
 </Project>

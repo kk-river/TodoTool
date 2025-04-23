@@ -5,5 +5,8 @@
   </Folder>
   <Folder Name="/src/" Id="02ea681e-c7d8-13c7-8484-4ac65e1b71e8">
     <Project Path="src/TodoTool/TodoTool.csproj" Id="bc8fd973-3a9b-4d61-977f-210e9ecd8419" />
+    <Project Path="src/TodoTool.Core/TodoTool.Core.csproj" Id="81680250-5def-4a5c-a061-e2916c74e86a" />
+    <Project Path="src/TodoTool.Modularity/TodoTool.Modularity.csproj" Id="6c773452-7398-4aa8-8b23-f368041caf09" />
+    <Project Path="src/TodoTool.Repositories.SQLite/TodoTool.Repositories.SQLite.csproj" Id="d0139e4b-f06a-4b7f-bb55-698fb125ae87" />
   </Folder>
 </Solution>

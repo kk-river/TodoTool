@@ -3,4 +3,7 @@
     <File Path=".editorconfig" />
     <File Path="Directory.Build.props" />
   </Folder>
+  <Folder Name="/src/" Id="02ea681e-c7d8-13c7-8484-4ac65e1b71e8">
+    <Project Path="src/TodoTool/TodoTool.csproj" Id="bc8fd973-3a9b-4d61-977f-210e9ecd8419" />
+  </Folder>
 </Solution>

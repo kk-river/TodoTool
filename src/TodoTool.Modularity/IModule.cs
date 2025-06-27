@@ -4,5 +4,6 @@ namespace TodoTool.Modularity;
 
 public interface IModule
 {
-    void Configure(IHostApplicationBuilder builder);
+    public void OnInitializing(IHostApplicationBuilder builder);
+    public void OnInitialized(IServiceProvider provider);
 }

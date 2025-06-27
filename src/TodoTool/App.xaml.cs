@@ -9,24 +9,19 @@ namespace TodoTool;
 public partial class App : Application
 {
     private readonly ILogger<App> _logger;
-    private readonly Window _window;
 
-    [Obsolete("For designer support")]
-    public App()
-    {
-        InitializeComponent();
-
-        _logger = null!;
-        _window = null!;
-    }
+    [Obsolete("For design time only", true)]
+    public App() : this(null!, null!) { }
 
     [ActivatorUtilitiesConstructor]
     public App(ILogger<App> logger, IServiceProvider provider)
     {
         InitializeComponent();
 
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _window = provider.GetRequiredService<Window>(); //Must be created after App.InitializeComponent for fluent design
+        ArgumentNullException.ThrowIfNull(logger, nameof(logger));
+        ArgumentNullException.ThrowIfNull(provider, nameof(provider));
+
+        _logger = logger;
     }
 
     protected override void OnStartup(StartupEventArgs e)
@@ -34,7 +29,5 @@ public partial class App : Application
         base.OnStartup(e);
 
         WpfProviderInitializer.SetDefaultObservableSystem(ex => _logger.ZLogError($"R3 UnhandledException:{ex}"));
-
-        _window.Show();
     }
 }

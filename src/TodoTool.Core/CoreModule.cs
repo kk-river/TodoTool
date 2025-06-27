@@ -9,7 +9,7 @@ namespace TodoTool;
 
 public class CoreModule : IModule
 {
-    public void Configure(IHostApplicationBuilder builder)
+    public void OnInitializing(IHostApplicationBuilder builder)
     {
         builder.Services.AddSingleton(TimeProvider.System);
 
@@ -27,4 +27,6 @@ public class CoreModule : IModule
             });
         });
     }
+
+    public void OnInitialized(IServiceProvider provider) { }
 }

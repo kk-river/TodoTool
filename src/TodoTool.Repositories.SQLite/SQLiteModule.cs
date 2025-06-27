@@ -10,12 +10,12 @@ namespace TodoTool;
 
 public class SQLiteModule : IModule
 {
-    public void Configure(IHostApplicationBuilder builder)
+    public void OnInitializing(IHostApplicationBuilder builder)
     {
         SQLiteConnectionStringBuilder sqliteConnectionStringBuilder = new()
         {
-            //DataSource = ":memory:" //オンメモリ
-            DataSource = Path.Combine(Environment.CurrentDirectory, "TodoTool.db") //ファイル
+            DataSource = ":memory:" //オンメモリ
+            //DataSource = Path.Combine(Environment.CurrentDirectory, "TodoTool.db") //ファイル
         };
 
         builder.Services.AddSingleton(sqliteConnectionStringBuilder);
@@ -32,6 +32,11 @@ public class SQLiteModule : IModule
 
         SqlMapper.RemoveTypeMap(typeof(DateTimeOffset));
         SqlMapper.AddTypeHandler(new DateTimeOffsetHandler());
+    }
+
+    public void OnInitialized(IServiceProvider provider)
+    {
+
     }
 }
 

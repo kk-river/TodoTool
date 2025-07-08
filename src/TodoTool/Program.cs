@@ -25,7 +25,6 @@ internal class Program
         builder.Services.AddSingleton<MainWindow>();
         builder.Services.AddSingleton<MainWindowViewModel>();
 
-
         moduleCatalog.OnInitializing(builder);
 
         IHost host = builder.Build();

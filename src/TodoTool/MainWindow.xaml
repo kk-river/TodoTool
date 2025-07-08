@@ -4,13 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TodoTool"
+        xmlns:entities="clr-namespace:TodoTool.Entities;assembly=TodoTool.Core"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="TodoTool" Height="450" Width="800"
         d:DataContext="{d:DesignInstance local:MainWindowViewModel}">
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
@@ -18,6 +19,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="10"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
@@ -25,6 +27,41 @@
             Grid.Column="0"
             VerticalAlignment="Center"
             Text="{Binding ProjectId.Value}"/>
+
+
+        <TreeView
+            Grid.RowSpan="3"
+            Focusable="False"
+            ItemsSource="{Binding Projects}"
+            Padding="0 0 15 0">
+
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate DataType="entities:Project" ItemsSource="{Binding Projects}">
+                    <TextBlock Text="{Binding Name}" />
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+
+        </TreeView>
+
+        <Button
+            Grid.Row="3"
+            Padding="0 5"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Left"
+            Focusable="False"
+            Command="{Binding AddProjectCommand}">
+
+            <WrapPanel>
+                <WrapPanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                </WrapPanel.Resources>
+
+                <TextBlock Margin="3 0 7 0" FontFamily="{StaticResource SymbolThemeFontFamily}" Text="&#xE710;"/>
+                <TextBlock Text="New Project"/>
+            </WrapPanel>
+        </Button>
 
         <TextBox
             Grid.Column="2"

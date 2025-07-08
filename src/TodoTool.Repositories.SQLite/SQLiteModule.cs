@@ -3,6 +3,7 @@ using System.Data.SQLite;
 using Dapper;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TodoTool.Entities;
 using TodoTool.Modularity;
 using TodoTool.Repositories;
 
@@ -32,6 +33,7 @@ public class SQLiteModule : IModule
 
         SqlMapper.RemoveTypeMap(typeof(DateTimeOffset));
         SqlMapper.AddTypeHandler(new DateTimeOffsetHandler());
+        SqlMapper.AddTypeHandler(new ProjectIdTypeHandler());
     }
 
     public void OnInitialized(IServiceProvider provider)
@@ -58,5 +60,19 @@ file class DateTimeOffsetHandler : SqlMapper.TypeHandler<DateTimeOffset>
     public override void SetValue(IDbDataParameter parameter, DateTimeOffset value)
     {
         parameter.Value = value.ToString("u");
+    }
+}
+
+public class ProjectIdTypeHandler : SqlMapper.TypeHandler<ProjectId>
+{
+    public override ProjectId Parse(object value)
+    {
+        return new ProjectId((string)value);
+    }
+
+    public override void SetValue(IDbDataParameter parameter, ProjectId value)
+    {
+        parameter.DbType = DbType.AnsiString;
+        parameter.Value = value.AsPrimitive();
     }
 }

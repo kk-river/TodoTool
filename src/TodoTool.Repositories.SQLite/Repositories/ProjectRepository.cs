@@ -1,6 +1,8 @@
 using Dapper;
 using Microsoft.Extensions.Logging;
+using R3;
 using System.Data;
+using TodoTool.Entities;
 using ZLogger;
 
 namespace TodoTool.Repositories;
@@ -9,6 +11,14 @@ internal class ProjectRepository(ILogger<ProjectRepository> logger, IDbConnectio
 {
     private readonly ILogger<ProjectRepository> _logger = logger;
     private readonly IDbConnection _dbConnection = dbConnection ?? throw new ArgumentNullException(nameof(dbConnection));
+
+    private readonly Subject<Project> _added = new();
+    private readonly Subject<Project> _updated = new();
+    private readonly Subject<ProjectId> _deleted = new();
+
+    public Observable<Project> Added => _added;
+    public Observable<Project> Updated => _updated;
+    public Observable<ProjectId> Deleted => _deleted;
 
     public async ValueTask InitializeAsync(CancellationToken token = default)
     {
@@ -33,7 +43,7 @@ internal class ProjectRepository(ILogger<ProjectRepository> logger, IDbConnectio
         }
     }
 
-    public async ValueTask<Project?> GetByIdAsync(string id, CancellationToken token = default)
+    public async ValueTask<Project?> GetByIdAsync(ProjectId id, CancellationToken token = default)
     {
         string sql = "SELECT * FROM Projects WHERE Id = @Id";
 
@@ -44,7 +54,7 @@ internal class ProjectRepository(ILogger<ProjectRepository> logger, IDbConnectio
     {
         string sql = "SELECT * FROM Projects";
 
-        return [.. (await _dbConnection.QueryAsync<Project>(new(sql, cancellationToken: token)))];
+        return [.. await _dbConnection.QueryAsync<Project>(new(sql, cancellationToken: token))];
     }
 
     public async ValueTask AddAsync(Project project, CancellationToken token = default)
@@ -55,6 +65,8 @@ internal class ProjectRepository(ILogger<ProjectRepository> logger, IDbConnectio
             """;
 
         await _dbConnection.ExecuteAsync(new(sql, project, cancellationToken: token));
+
+        _added.OnNext(project);
     }
 
     public async ValueTask UpdateAsync(Project project, CancellationToken token = default)
@@ -66,12 +78,16 @@ internal class ProjectRepository(ILogger<ProjectRepository> logger, IDbConnectio
             """;
 
         await _dbConnection.ExecuteAsync(new(sql, project, cancellationToken: token));
+
+        _updated.OnNext(project);
     }
 
-    public async ValueTask DeleteAsync(string id, CancellationToken token = default)
+    public async ValueTask DeleteAsync(ProjectId id, CancellationToken token = default)
     {
         string sql = "DELETE FROM Projects WHERE Id = @Id";
 
         await _dbConnection.ExecuteAsync(new(sql, new { Id = id }, cancellationToken: token));
+
+        _deleted.OnNext(id);
     }
 }

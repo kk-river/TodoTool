@@ -58,6 +58,7 @@ public class MainWindowViewModel
     }
 
     public INotifyCollectionChangedSynchronizedViewList<Project> Projects { get; }
+    public BindableReactiveProperty<string> SelectedProjectPath { get; } = new(string.Empty);
 
     public ReactiveCommand<Unit> AddProjectCommand { get; }
     public ReactiveCommand<Unit> SaveProjectCommand { get; }

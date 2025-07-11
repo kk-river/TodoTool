@@ -33,6 +33,7 @@
             Grid.RowSpan="3"
             Focusable="False"
             ItemsSource="{Binding Projects}"
+            SelectedValuePath="{Binding }"
             Padding="0 0 15 0">
 
             <TreeView.ItemTemplate>
